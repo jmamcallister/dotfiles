@@ -1,0 +1,54 @@
+# ~/.bash_profile
+
+export HISTCONTROL=ignoreboth
+
+shopt -s histappend
+
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+
+shopt -s autocd
+
+export CLICOLOR=1
+export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home
+
+# Prompt
+#
+# [00;32m]
+# [XX;YYm]
+# [<style>;<colour>]
+GREEN="\[\033[00;32m\]"
+RED="\[\033[00;31m\]"
+BLUE="\[\033[00;34m\]"
+RESET="\[\033[00m\]"
+
+# Alternative method
+#GREEN="\[$(tput setaf 2)\]"
+#RED="\[$(tput setaf 9)\]"
+#BLUE="\[$(tput setaf 12)\]"
+#RESET="\[$(tput sgr0)\]"
+
+PS1="${GREEN}\u@\h${RESET}:${RED}\w${RESET}\$ "
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+if [ -d ~/.bash_aliases.d ]; then
+    for _config in ~/.bash_aliases.d/*; do
+        . $_config
+    done
+    unset _config
+fi
+
+
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
+
+export PATH="$HOME/.jenv/bin:$HOME/bin:$PATH"
+eval "$(jenv init - --no-rehash)"
+(jenv rehash &) 2> /dev/null
